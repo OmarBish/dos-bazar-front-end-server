@@ -24,7 +24,7 @@ def Books():
         req = {
             'sqlite_query':sqlite_insert_query
         }
-        result = requests.post('http://127.0.0.1:5001/query',json=req)
+        result = requests.post('https://dos-bazar-catalog-server.herokuapp.com/query',json=req)
         
         resData=result.json()
         data={'id':resData['id'],'title':data['title'],'amount':data['amount']}
@@ -39,7 +39,7 @@ def Books():
         req = {
             'sqlite_query':sqlite_insert_query
         }
-        result = requests.post('http://127.0.0.1:5001/query',json=req)
+        result = requests.post('https://dos-bazar-catalog-server.herokuapp.com/query',json=req)
         
         res =result.json()
         return jsonify(res) ,200
@@ -56,7 +56,7 @@ def Book(book_id):
             req = {
                 'sqlite_query':sqlite_insert_query
             }
-            result = requests.post('http://127.0.0.1:5001/query',json=req)
+            result = requests.post('https://dos-bazar-catalog-server.herokuapp.com/query',json=req)
            
             records = result.json()
             if(len(records) == 0):
@@ -66,7 +66,7 @@ def Book(book_id):
                 return jsonify(res) ,404
             book = records[0]
 
-            result = requests.post('http://127.0.0.1:5002/operation/buy',json=book)
+            result = requests.post('https://dos-bazar-order-server.herokuapp.com/operation/buy',json=book)
             if result.status_code == 410:
                 res = {
                     'message': 'Out of stock'
@@ -89,7 +89,7 @@ def Book(book_id):
         req = {
             'sqlite_query':sqlite_insert_query
         }
-        result = requests.post('http://127.0.0.1:5001/query',json=req)
+        result = requests.post('https://dos-bazar-catalog-server.herokuapp.com/query',json=req)
         
         records = result.json()
 
