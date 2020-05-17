@@ -14,10 +14,11 @@ from app.helpers import getCachedBooks,getCachedBook,getResponse
 @app.route("/cleare-cache",methods=['POST'])
 def cleareCache():
     data = request.get_json()
+    print("clear cache for: "+ str(data['id']))
     if(data['id'] == 'books'):
         cache.delete_memoized(getCachedBooks)
     else:
-        cache.delete_memoized(getCachedBook,data['id'])
+        cache.delete_memoized(getCachedBook,str(data['id']))
     return jsonify() ,200
 
 # index route, redirect to api dcumentation url
@@ -75,13 +76,14 @@ def Book(book_id):
                 return jsonify(res) ,404
             book = records[0]
 
-            result = getResponse('order','/query',book)
+            result = getResponse('order','/operation/buy',book)
+
             if result.status_code == 410:
                 res = {
                     'message': 'Out of stock'
                 }
                 return jsonify(res) ,410
-            
+            print(result)
             book = result.json()
 
             return jsonify(book) ,200
