@@ -27,6 +27,9 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 catalog_servers = ["https://dos-bazar-catalog-master.herokuapp.com" ,"https://dos-bazar-catalog-read-1.herokuapp.com","https://dos-bazar-catalog-read-2.herokuapp.com"]
 order_servers = ["https://dos-bazar-order-server.herokuapp.com","https://dos-bazar-order-server-1.herokuapp.com"]
 
+# catalog_servers = ["http://127.0.0.1:5000" ,"http://127.0.0.1:5001","http://127.0.0.1:5002"]
+# order_servers = ["http://127.0.0.1:4000","http://127.0.0.1:4001"]
+
 #get routes
 from app import routes
 

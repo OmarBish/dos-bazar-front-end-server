@@ -1,25 +1,23 @@
 # third-party imports
 from flask import redirect,request,jsonify
 import requests
-from app.helpers import getResponse
 
 # local imports
 from app import app
 from app import cache
 from app import catalog_servers,order_servers
+from app.helpers import getCachedBooks,getCachedBook,getResponse 
 
-@cache.memoize(60) #sec
-def getCachedResponse(base , route , query):
-    req = {
-                'sqlite_query':query
-            }
-    return getResponse(base , route , req)
+
 
 
 @app.route("/cleare-cache",methods=['POST'])
 def cleareCache():
     data = request.get_json()
-    cache.delete_memoized(getCachedResponse, data['base'],data['route'], data['query'])
+    if(data['id'] == 'books'):
+        cache.delete_memoized(getCachedBooks)
+    else:
+        cache.delete_memoized(getCachedBook,data['id'])
     return jsonify() ,200
 
 # index route, redirect to api dcumentation url
@@ -42,7 +40,7 @@ def Books():
         }
         
 
-        result = getResponse('catalog','/query',req)
+        result = getResponse('books','/query',req)
         
         resData=result.json()
         data={'id':resData['id'],'title':data['title'],'amount':data['amount']}
@@ -52,10 +50,8 @@ def Books():
         title = request.args.get('title') 
         if(title is None):
             title =''
-        
-        sqlite_insert_query = "SELECT * FROM books WHERE title LIKE '"+ "%"+title+"%'"
-        
-        result = getCachedResponse('catalog','/query',sqlite_insert_query)
+                
+        result = getCachedBooks(title)
         
         res =result.json()
         return jsonify(res) ,200
@@ -68,9 +64,8 @@ def Book(book_id):
         data = request.get_json()
 
         if data['operation'] == 'buy':
-            sqlite_insert_query = "SELECT * FROM books where id = "+ book_id
             
-            result = getCachedResponse('catalog','/query',sqlite_insert_query)
+            result = getCachedBook(book_id)
            
             records = result.json()
             if(len(records) == 0):
@@ -101,7 +96,7 @@ def Book(book_id):
     elif request.method == 'GET':
         sqlite_insert_query = "SELECT * FROM books where id = "+ book_id
         
-        result = getCachedResponse('catalog','/query',sqlite_insert_query)
+        result = getCachedBook(book_id)
         
         records = result.json()
 

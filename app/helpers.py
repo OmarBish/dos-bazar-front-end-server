@@ -25,3 +25,22 @@ def getResponse(base , route , body):
         url = catalog_servers[randint(0,len(catalog_servers)-1)]
 
     return requests.post(url + route ,json=body)
+
+
+
+@cache.memoize(60) #sec
+def getCachedBooks(title):
+    req = {
+            'sqlite_query':"SELECT * FROM books WHERE title LIKE '"+ "%"+title+"%'"
+        }
+   
+    return getResponse('books','/query' , req)
+
+@cache.memoize(60) #sec
+def getCachedBook(id):
+    req = {
+            'sqlite_query':"SELECT * FROM books where id = "+ book_id
+        }
+   
+    return getResponse('books','/query' , req)
+    
