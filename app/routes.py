@@ -75,7 +75,7 @@ def Book(book_id):
                 return jsonify(res) ,404
             book = records[0]
 
-            result = getResponse('order','/query',json=book)
+            result = getResponse('order','/query',book)
             if result.status_code == 410:
                 res = {
                     'message': 'Out of stock'
