@@ -2,6 +2,8 @@
 from flask import Flask
 from flask_cors import CORS, cross_origin
 from flask_caching import Cache
+import logging
+from logging import StreamHandler
 
 import os
 # local imports
@@ -30,5 +32,10 @@ from app import routes
 
 def create_app(config_name):
     app.config.from_pyfile(app_config[config_name])
+    
+    file_handler = StreamHandler()
+    file_handler.setLevel(logging.WARNING)
+    app.logger.addHandler(file_handler)
+
     return app
 
