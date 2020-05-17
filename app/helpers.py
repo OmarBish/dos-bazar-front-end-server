@@ -14,9 +14,7 @@ def buildResponse(status = 'Success',message='',code=200,data=None):
         res['data'] = data
     return jsonify(res) ,code
 
-@cache.memoize(60) #sec
-def getCachedResponse(base , route , body):
-    return getResponse(base , route , body)
+
 
 def getResponse(base , route , body):
     url = None

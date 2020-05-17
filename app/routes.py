@@ -1,18 +1,25 @@
 # third-party imports
 from flask import redirect,request,jsonify
 import requests
-from app.helpers import getCachedResponse,getResponse
+from app.helpers import getResponse
 
 # local imports
 from app import app
 from app import cache
 from app import catalog_servers,order_servers
 
+@cache.memoize(60) #sec
+def getCachedResponse(base , route , query):
+    req = {
+                'sqlite_query':query
+            }
+    return getResponse(base , route , req)
+
 
 @app.route("/cleare-cache",methods=['POST'])
 def cleareCache():
     data = request.get_json()
-    cache.delete_memoized('getCachedResponse', data.base,data.route, data.body)
+    cache.delete_memoized(getCachedResponse, data['base'],data['route'], data['query'])
     return jsonify() ,200
 
 # index route, redirect to api dcumentation url
@@ -47,10 +54,8 @@ def Books():
             title =''
         
         sqlite_insert_query = "SELECT * FROM books WHERE title LIKE '"+ "%"+title+"%'"
-        req = {
-            'sqlite_query':sqlite_insert_query
-        }
-        result = getCachedResponse('catalog','/query',req)
+        
+        result = getCachedResponse('catalog','/query',sqlite_insert_query)
         
         res =result.json()
         return jsonify(res) ,200
@@ -64,10 +69,8 @@ def Book(book_id):
 
         if data['operation'] == 'buy':
             sqlite_insert_query = "SELECT * FROM books where id = "+ book_id
-            req = {
-                'sqlite_query':sqlite_insert_query
-            }
-            result = getCachedResponse('catalog','/query',req)
+            
+            result = getCachedResponse('catalog','/query',sqlite_insert_query)
            
             records = result.json()
             if(len(records) == 0):
@@ -97,10 +100,8 @@ def Book(book_id):
     #list book object data
     elif request.method == 'GET':
         sqlite_insert_query = "SELECT * FROM books where id = "+ book_id
-        req = {
-            'sqlite_query':sqlite_insert_query
-        }
-        result = getCachedResponse('catalog','/query',req)
+        
+        result = getCachedResponse('catalog','/query',sqlite_insert_query)
         
         records = result.json()
 
