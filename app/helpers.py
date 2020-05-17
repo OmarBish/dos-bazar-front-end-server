@@ -22,8 +22,8 @@ def getResponse(base , route , body):
     url = None
 
     if base == "order":
-        url = order_servers[randint(0,len(order_servers))]
+        url = order_servers[randint(0,len(order_servers)-1)]
     else:
-        url = catalog_servers[randint(0,len(catalog_servers))]
+        url = catalog_servers[randint(0,len(catalog_servers)-1)]
 
     return requests.post(url + route ,json=body)
