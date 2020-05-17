@@ -22,8 +22,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # order_servers = ["https://dos-bazar-order-server-2.herokuapp.com" , "https://dos-bazar-order-server-1.herokuapp.com"]
 
 
-catalog_servers = ["https://dos-bazar-catalog-server.herokuapp.com" ]
-order_servers = ["https://dos-bazar-order-server.herokuapp.com"]
+catalog_servers = ["https://dos-bazar-catalog-master.herokuapp.com" ,"https://dos-bazar-catalog-read-1.herokuapp.com","https://dos-bazar-catalog-read-2.herokuapp.com"]
+order_servers = ["https://dos-bazar-order-server.herokuapp.com","https://dos-bazar-order-server-1.herokuapp.com"]
 
 #get routes
 from app import routes
