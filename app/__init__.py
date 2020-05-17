@@ -10,9 +10,9 @@ from config import app_config
 # Initialize application
 app = Flask(__name__, instance_relative_config=True)
 cacheConfig = {
-    # 'CACHE_TYPE': 'simple',
-    'CACHE_TYPE': 'redis',
-    "CACHE_REDIS_URL": os.environ["REDIS_URL"]
+    'CACHE_TYPE': 'simple',
+    # 'CACHE_TYPE': 'redis',
+    # "CACHE_REDIS_URL": os.environ["REDIS_URL"]
 }
 cache = Cache(app, config=cacheConfig)
 cors = CORS(app)
