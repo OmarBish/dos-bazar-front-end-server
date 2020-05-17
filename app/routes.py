@@ -15,9 +15,8 @@ from app.helpers import getCachedBooks,getCachedBook,getResponse
 def cleareCache():
     data = request.get_json()
     print("clear cache for: "+ str(data['id']))
-    if(data['id'] == 'books'):
-        cache.delete_memoized(getCachedBooks)
-    else:
+    cache.delete_memoized(getCachedBooks)
+    if(data['id' != 'books']):
         cache.delete_memoized(getCachedBook,str(data['id']))
     return jsonify() ,200
 
