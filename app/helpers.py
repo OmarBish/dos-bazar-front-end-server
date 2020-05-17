@@ -39,7 +39,7 @@ def getCachedBooks(title):
 @cache.memoize(60) #sec
 def getCachedBook(id):
     req = {
-            'sqlite_query':"SELECT * FROM books where id = "+ book_id
+            'sqlite_query':"SELECT * FROM books where id = "+ id
         }
    
     return getResponse('books','/query' , req)
