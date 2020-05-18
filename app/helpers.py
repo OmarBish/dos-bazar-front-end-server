@@ -28,7 +28,7 @@ def getResponse(base , route , body):
 
 
 
-# @cache.memoize(60) #sec
+@cache.memoize(60) #sec
 def getCachedBooks(title):
     req = {
             'sqlite_query':"SELECT * FROM books WHERE title LIKE '"+ "%"+title+"%'"
@@ -36,7 +36,7 @@ def getCachedBooks(title):
    
     return getResponse('books','/query' , req)
 
-# @cache.memoize(60) #sec
+@cache.memoize(60) #sec
 def getCachedBook(id):
     req = {
             'sqlite_query':"SELECT * FROM books where id = "+ id
